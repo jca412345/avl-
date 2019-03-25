@@ -11,9 +11,9 @@ public class Main4 {
         Binarynode g=new Binarynode(24);
         Binarynode h=new Binarynode(26);
         Binarynode i=new Binarynode(12);
-        a.setLeft(b);
+        a.setLeft(d);
         a.setRight(c);
-        b.setLeft(d);
+        d.setRight(b);
         e.setLeft(a);
         e.setRight(f);
         f.setLeft(g);
@@ -33,11 +33,43 @@ public class Main4 {
 
         //        binaryTree.midorder(a);
 //        binaryTree.insert(11,a);
+        /*binaryTree.midorder(e);
+        System.out.println("=================");
+        binaryTree.preorder(e);*/
         binaryTree.insert2(11,e);
-
+//
+        binaryTree.insert2(10,e);
+        binaryTree.insert2(29,e);
+        binaryTree.insert2(32,e);
+        binaryTree.insert2(7,e);
+        binaryTree.insert2(8,e);
         binaryTree.midorder(e);
+        System.out.println("=================");
+        binaryTree.preorder(e);
+        System.out.println("=================下面是删除===============");
+        binaryTree.del(32,e);
+        binaryTree.del(26,e);
+        binaryTree.midorder(d);
+        System.out.println(binaryTree.depth(d));
+        System.out.println("=================下面是删除根节点===============");
+        binaryTree.del(13,d);
+        binaryTree.midorder(d);
 //        System.out.println(binaryTree.depth(e));
-//        System.out.println(d.getHeight());
+       /* System.out.println(binaryTree.depth(e));
+        System.out.println(binaryTree.depth(i));
 //        System.out.println(a.getHeight());
+        binaryTree.preorder(e);
+        System.out.println("======================");
+        binaryTree.midorder(d);
+        binaryTree.midorder(i);
+        System.out.println("====================");
+        binaryTree.preorder(i);
+        System.out.println(binaryTree.depth(i));
+        binaryTree.midorder(b);
+        System.out.println(binaryTree.depth(b));
+        binaryTree.preorder(b);
+        System.out.println("====================");
+        System.out.println(binaryTree.depth(e));*/
+
     }
 }

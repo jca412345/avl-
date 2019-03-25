@@ -77,6 +77,7 @@ public class BinaryTree {
         }
 
     }
+
     //插入(选择指定节点插入到左子树)
     public void insertLeft(Binarynode insertnode,Binarynode value){
         value.setLeft(insertnode.getLeft());
@@ -146,7 +147,7 @@ public class BinaryTree {
         return binarynode;
 
     }
-    //二叉树中删除（未完成）
+    //二叉树中删除
     public Binarynode del(int value,Binarynode binarynode){
         if (binarynode==null)
             return binarynode;
@@ -156,18 +157,17 @@ public class BinaryTree {
         else if (value>binarynode.getRoot()){
             binarynode.setRight(del(value,binarynode.getRight()));
         }
-        else if (binarynode.getRight()!=null){//只要有右节点
+        else if (binarynode.getRight()!=null&&binarynode.getLeft()!=null){//有双节点
             binarynode.setRoot(findMin(binarynode.getRight()).getRoot());//替换
-            removeMin(binarynode);//移除
-        }
-        else if (binarynode.getLeft()!=null)//左节点
-        {
-            binarynode.setRoot(binarynode.getLeft().getRoot());
+            binarynode.setRight(del(binarynode.getRoot(),binarynode.getRight()));//移除
         }
         else {
-
+            if (binarynode.getLeft()!=null)
+                binarynode=binarynode.getLeft();
+            else
+                binarynode=binarynode.getRight();
         }
-        return binarynode;
+        return balance(binarynode);
 
     }
     //求深度
@@ -210,42 +210,83 @@ public class BinaryTree {
                 avlTreeNode=rotateWithLeftChild(avlTreeNode);//单旋转
             }
             else
-                doubleWithLeftChild(avlTreeNode);//双旋转
+                avlTreeNode=doubleWithLeftChild(avlTreeNode);//双旋转
         }
         if (depth(avlTreeNode.getRight())-depth(avlTreeNode.getLeft())>=2){
             if (depth(avlTreeNode.getRight().getRight())>depth(avlTreeNode.getRight().getLeft())){
-                rotateWithRightChild(avlTreeNode);
+                avlTreeNode=rotateWithRightChild(avlTreeNode);
             }
             else
-                doubleWithRightChild(avlTreeNode);
+                avlTreeNode=doubleWithRightChild(avlTreeNode);
         }
 //        avlTreeNode.setHeight(Math.max(height(avlTreeNode.getLeft()),height(avlTreeNode.getRight()))+1);
         return avlTreeNode;
     }
     //右双旋转
-    public void doubleWithRightChild(Binarynode avlTreeNode) {
+    public Binarynode doubleWithRightChild(Binarynode avlTreeNode) {
+        avlTreeNode.setRight(rotateWithLeftChild(avlTreeNode.getRight()));
+        return rotateWithRightChild(avlTreeNode);
     }
 
     //右单旋转
-    public void rotateWithRightChild(Binarynode avlTreeNode) {
-      /*  avlTreeNode.getRight().setFather(avlTreeNode.getFather());
-        avlTreeNode.setFather(avlTreeNode.getRight());*/
+    public Binarynode rotateWithRightChild(Binarynode avlTreeNode) {
+       /* System.out.println("进入了右-右旋转");
+        System.out.println("出现旋转的点"+avlTreeNode.getRoot());*/
+        Binarynode binarynode1=avlTreeNode.getRight();
+        avlTreeNode.setRight(binarynode1.getLeft());
+        binarynode1.setLeft(avlTreeNode);
+        return binarynode1;
     }
 
     //左双旋转
-    public void doubleWithLeftChild(Binarynode avlTreeNode) {
-        /*avlTreeNode.getFather();
-        avlTreeNode.getLeft().getRight().setRight(avlTreeNode);
-        avlTreeNode.getLeft().getRight().setLeft(avlTreeNode.getLeft());*/
+    public Binarynode doubleWithLeftChild(Binarynode avlTreeNode) {
+       /* System.out.println("使用了左-右双旋转");
+        System.out.println("出现旋转的点"+avlTreeNode.getRoot());*/
+        avlTreeNode.setLeft(rotateWithRightChild(avlTreeNode.getLeft()));
+//        System.out.println("此时旋转之后的左边为"+avlTreeNode.getLeft().getRoot());
+        return rotateWithLeftChild(avlTreeNode);
     }
     //左单旋转
     public Binarynode rotateWithLeftChild(Binarynode avlTreeNode) {
-//        System.out.println("进入了左-左旋转");
+      /*  System.out.println("进入了左-左旋转");
+        System.out.println("出现旋转的点"+avlTreeNode.getRoot());*/
+
         Binarynode avlTreeNode1=avlTreeNode.getLeft();
         avlTreeNode.setLeft(avlTreeNode1.getRight());
         avlTreeNode1.setRight(avlTreeNode);
+
 //        avlTreeNode.setHeight(Math.max(height(avlTreeNode.getLeft()),height(avlTreeNode.getRight()))+1);
 //        avlTreeNode1.setHeight(Math.max(height(avlTreeNode1.getLeft()),avlTreeNode.getHeight())+1);
         return avlTreeNode1;
+    }
+    //插入的非递归方法
+    public void insert3(int value,Binarynode binarynode){
+        if (binarynode==null){
+            new Binarynode(value,null,null);
+        }
+        else {
+            Binarynode temp=null;
+            int flag=0;
+            while (binarynode==null){
+                if (value>binarynode.getRoot()){
+                    temp=binarynode;
+                    binarynode=binarynode.getRight();
+                    flag=1;
+                }
+                else if (value<binarynode.getRoot()){
+                    temp=binarynode;
+                    binarynode=binarynode.getLeft();
+                    flag=2;
+                }
+                else ;
+            }
+            if (flag==1){
+                temp.setRight(new Binarynode(value,null,null));
+            }
+            else if (flag==2){
+                temp.setLeft(new Binarynode(value,null,null));
+            }
+            else ;
+        }
     }
 }
